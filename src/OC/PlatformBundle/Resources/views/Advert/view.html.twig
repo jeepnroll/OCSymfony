@@ -1,0 +1,108 @@
+{% extends "CoreBundle::layout.html.twig" %}
+{% block title %}
+    Lecture d'une annonce - {{ parent() }}
+{% endblock %}
+
+{% block ocplatform_body %}
+    <div class="card mb-5">
+        {% if not advert.categories.empty %}
+            <p class="m-2">
+                {% for category in advert.categories %}
+                    <span class="badge badge-default p-1">
+                        {{ category.name }}
+                    </span>
+                {% endfor %}
+            </p>
+        {% endif %}
+        {% if advert.image is not null %}
+            <img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}">
+        {% endif %}
+        <div class="card-header">
+            <h3 class="card-title">{{ advert.title }}</h3>
+            <h5 class="card-subtitle pull-right">Par {{ advert.author }}, le {{ advert.date|date("d/m/Y") }}</h5>
+        </div>
+        <div class="card-block">
+            <h4 class="card-title">Description du poste</h4>
+            <hr>
+            <div class="card-text text-justify">
+                {{ advert.content | raw}}
+            </div>
+            {% if listAdvertSkill | length > 0 %}
+                <div class="card-text">
+                    <hr>
+                    <h4>Compétences demandées</h4>
+                    <hr>
+                    <table class="table table-sm">
+                        <thead class="thead-default">
+                        <tr>
+                            <th>Compétence</th>
+                            <th>Niveau</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for advertSkill in listAdvertSkill %}
+                            <tr>
+                                <th scope="row">{{ advertSkill.skill.name }}</th>
+                                <td>{{ advertSkill.level }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+            <hr>
+            {% if advert.finderProfil is not empty %}
+            <h4>Profil recherché</h4>
+            <hr>
+            <div class="card-text text-justify">
+                {{ advert.finderProfil | raw}}
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            <ul class="nav nav-pills nav-fill">
+                <li class="nav-item">
+                    <a href="{{ path('oc_platform_home') }}" class="btn btn-secondary">
+                        <i class="fa fa-step-backward"></i>
+                        Retour à la liste
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('oc_platform_edit', {'id': advert.id}) }}" class="btn btn-secondary">
+                        <i class="fa fa-pencil"></i>
+                        Modifier l'annonce
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('oc_platform_delete', {'id': advert.id}) }}" class="btn btn-danger">
+                        <i class="fa fa-trash"></i>
+                        Supprimer l'annonce
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <h4>Les Candidat(e)s</h4>
+    </div>
+
+    {% if listApp is not null %}
+        {% for app in listApp %}
+            <div class="card card-inverse col-10 pull-right mt-3 mb-3" style="background-color: #333; border-color: #333">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        {{ app.author }}
+                        <small class="pull-right">{{ app.date | date('d/m/Y') }}</small>
+                    </h5>
+                </div>
+                <div class="card-block">
+                    <div class="card-text">
+                        <p>{{ app.content | raw }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
+

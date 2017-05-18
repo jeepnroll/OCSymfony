@@ -1,0 +1,23 @@
+{% extends "CoreBundle::layout.html.twig" %}
+
+
+{% block title %}
+    Accueil - {{ parent() }}
+{% endblock %}
+{% block body %}
+    <h2>Page d'accueil <small class="pull-right">{{ "now" | date("d/m/Y") }}</small> </h2>
+    {% for message in app.session.flashbag.get('info') %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            Message flash : {{ message }}
+        </div>
+
+    {% endfor %}
+    <hr>
+    <h3>Dernières annonces </h3>
+    {{ render(controller("OCPlatformBundle:Advert:menu", { 'limit' : 3 } )) }}
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci asperiores, debitis deserunt dicta earum iure, labore libero magni, minima nam nemo pariatur quibusdam quisquam rem velit voluptate voluptatem voluptatum.</p>
+
+{% endblock %}
