@@ -18,7 +18,4 @@ services:
         arguments:
             - "@oc_platform.email.application_mailer"
         tags:
-             {
-                name: doctrine.event_listener,
-                event: postPersist
-             }
+            - { name: doctrine.event_listener, event: PostPersist }
