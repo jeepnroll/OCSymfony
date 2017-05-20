@@ -5,11 +5,10 @@
 {% endblock %}
 {% block ocplatform_body %}
     <h2>Ajouter une annonce</h2>
-    {{ include("OCPlatformBundle:Advert:form.html.twig") }}
-
     <p>
         Vous pouvez ajouter une annonce, faites bien attention à faire une description claire et concise.
     </p>
+    {{ include("OCPlatformBundle:Advert:form.html.twig") }}
     <p>
         <a href="{{ path('oc_platform_home') }}" class="btn btn-secondary">
             <i class="fa fa-step-backward"></i>

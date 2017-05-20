@@ -4,9 +4,6 @@ namespace OC\PlatformBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use OC\PlatformBundle\Entity\Application;
-use OC\PlatformBundle\Entity\Category;
-use OC\PlatformBundle\Entity\Image;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -27,7 +24,7 @@ class Advert
 
     /**
      * @var string $authorMail
-     * @ORM\Column(name="author_mail", type="string", length=255, unique=true, nullable=false)
+     * @ORM\Column(name="author_mail", type="string", length=255, unique=false, nullable=false)
      */
     private $authorMail;
 
@@ -53,7 +50,7 @@ class Advert
 
     /**
      * @var $image
-     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist", "remove"})
      */
     private $image;
 

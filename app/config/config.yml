@@ -39,6 +39,9 @@ framework:
 twig:
   debug: '%kernel.debug%'
   strict_variables: '%kernel.debug%'
+  form_themes:
+      - 'bootstrap_3_layout.html.twig'
+#app/config/config.yml
 
 # Doctrine Configuration
 doctrine:
@@ -76,3 +79,10 @@ stof_doctrine_extensions:
   orm:
       default:
           sluggable: true
+
+
+services:
+    dzango.twig.truncate_extension:
+        class: Dzango\Twig\Extension\Truncate
+        tags:
+            - { name: twig.extension }

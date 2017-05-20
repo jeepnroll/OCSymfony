@@ -1,0 +1,19 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% block title %}
+    Supprimer une annonce - {{ parent() }}
+{% endblock %}
+
+{% block ocplatform_body %}
+    <h2>Supprimer une annonce</h2>
+    <p class="alert alert-warning">Êtes-vous certain de vouloir supprimer une annonce</p>
+
+    <form action="{{ path('oc_platform_delete', {'id': advert.id}) }}" method="post">
+        <a href="{{ path('oc_platform_view', {'id': advert.id}) }}" class="btn btn-success">
+            <i class="fa fa-backward"></i>
+            Retour à l'annonce
+        </a>
+        <input type="submit" value="Supprimer" class="btn btn-danger">
+        {{ form_rest(form) }}
+    </form>
+{% endblock %}

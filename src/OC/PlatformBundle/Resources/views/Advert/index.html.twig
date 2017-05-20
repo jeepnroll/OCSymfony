@@ -10,27 +10,30 @@
     <h2>Liste des annonces</h2>
 
     {% for advert in listAdverts %}
-        <a href="{{ path('oc_platform_view', {'id': advert.id }) }}">
-            <div class="card mt-3 mb-3">
-                <div class="row m-0 p-0">
-                    {% if advert.image is not null %}
-                        <div class="col-4 m-0 p-0 align-middle">
-                            <img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}" class="img-thumbnail">
-                        </div>
-                    {% endif %}
-                    <div class="col m-0 p-0 align-middle">
-                        <div class="card-header m-0">
+
+        <div class="card mt-3 mb-3">
+            <div class="row m-0 p-0">
+                {% if advert.image is not null %}
+                    <div class="col-4 m-0 p-0 align-middle">
+                        <img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}" class="img-thumbnail">
+                    </div>
+                {% endif %}
+                <div class="col m-0 p-0 align-middle">
+                    <div class="card-header m-0">
+                        <a href="{{ path('oc_platform_view', {'id': advert.id }) }}">
                             <h5 class="card-title">
                                 {{ advert.title }}
+                                <small class="pull-right">par {{ advert.author }}, le {{ advert.date|date("d/m/y") }}</small>
                             </h5>
-                        </div>
-                        <div class="card-text p-3">
-                            <p class="pull-right">par {{ advert.author }}, le {{ advert.date|date("d/m/y") }}</p>
-                        </div>
+                        </a>
+                    </div>
+                    <div class="card-text p-3">
+                        {{ advert.content | raw | truncate(100, "...", true , false )}}
                     </div>
                 </div>
             </div>
-        </a>
+        </div>
+
 
     {% endfor %}
     <ul class="pagination">

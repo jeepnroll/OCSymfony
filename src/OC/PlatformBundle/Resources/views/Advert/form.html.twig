@@ -1,10 +1,84 @@
-
-{# On laisse vide la vue pour l'instant on comblera plus tard lorsqu'on saura afficher un formulaire #}
-<div class="card">
-    <div class="card-header">
-        <h3>Formulaire d'annonce</h3>
+{{ form_start(form, {'attr': {'class':'form-horizontal'}}) }}
+{{ form_errors(form) }}
+<fieldset class="bg-faded p-4 mb-2">
+    <legend>
+        <strong>Annonce</strong>
+    </legend>
+    {% if form.date is defined %}
+        {{ form_row(form.date) }}
+    {% endif %}
+    {{ form_row(form.title) }}
+    {% if form.slug is defined %}
+        {{ form_row(form.slug) }}
+    {% endif %}
+    <div class="checkbox-inline">
+        <p>Catégories</p>
+        {% for cat in form.categories %}
+            {{ form_widget(cat) }}
+            {{ form_label(cat, {'attr': {'class': 'checkbox-inline'}}) }}
+        {% endfor %}
     </div>
-    <div class="card-block">
-        {{ form(form) }}
+    <a data-toggle="tooltip" title="Ajouter une catégorie" data-placement="bottom">
+        <button type="button"
+                id="add_category"
+                class="btn btn-sm btn-primary"
+                data-toggle="modal"
+                data-target="#modAddCat"
+
+        >
+            <i class="fa fa-plus"></i>
+        </button>
+    </a>
+
+
+</fieldset>
+<fieldset class="bg-faded p-4 mb2">
+    <legend>
+        <strong>Auteur</strong>
+    </legend>
+    {{ form_row(form.author) }}
+    {{ form_row(form.authorMail) }}
+</fieldset>
+<fieldset class="bg-faded p-4 mb2">
+    <legend>
+        <strong>Image</strong>
+    </legend>
+    {{ form_row(form.image) }}
+</fieldset>
+<fieldset class="bg-faded p-4 mb2">
+    <legend>
+        <strong>Description</strong>
+    </legend>
+    {{ form_row(form.content) }}
+    {{ form_row(form.finderProfil) }}
+</fieldset>
+{{ form_row(form.published) }}
+{{ form_row(form.save) }}
+{{ form_rest(form) }}
+{{ form_end(form) }}
+
+<div class="modal fade" id="modAddCat" tabindex="-1" role="dialog" aria-labelledby="modAddCat" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Ajouter une catégorie</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                test
+            </div>
+        </div>
     </div>
 </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+//        $('#add_category').on('click', function () {
+//
+//        })
+    });
+</script>
+

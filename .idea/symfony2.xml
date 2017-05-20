@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Symfony2PluginSettings">
+    <option name="pathToUrlGenerator" value="var/cache/dev/appDevUrlGenerator.php" />
+    <option name="pathToTranslation" value="var/cache/dev/translations" />
+    <option name="serviceJsNameStrategy" value="var className = args.className;&#10;var projectName = args.projectName;&#10;var projectBasePath = args.projectBasePath;&#10;var defaultNaming = args.defaultNaming;&#10;&#10;// nullable&#10;var relativePath = args.relativePath;&#10;var absolutePath = args.absolutePath;&#10;&#10;return className.replace(/\\/g, '.').toLowerCase();" />
+    <option name="pluginEnabled" value="true" />
+    <option name="lastServiceGeneratorLanguage" value="yaml" />
+  </component>
+</project>
