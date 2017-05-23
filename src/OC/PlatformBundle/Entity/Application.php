@@ -50,11 +50,32 @@ class Application
     private $date;
 
     /**
+     * @var string $ip
+     */
+    private $ip;
+
+    /**
      * Application constructor.
      */
     public function __construct()
     {
         $this->date = new \DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param string $ip
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
     }
 
 
@@ -176,5 +197,10 @@ class Application
      */
     public function decrease(){
         $this->getAdvert()->decreaseApplication();
+    }
+
+    public function isFlood($ip, $time)
+    {
+
     }
 }

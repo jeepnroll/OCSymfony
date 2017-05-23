@@ -23,7 +23,7 @@ class AdvertType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $pattern = 'D%';
+        $pattern = null;
 
         $builder
             ->add('date',           DateTimeType::class)
@@ -39,10 +39,8 @@ class AdvertType extends AbstractType
                     "class"         =>'OCPlatformBundle:Category',
                     "choice_label"  => 'name',
                     "expanded"      => true,
-                    'multiple'      => true,
-                    'query_builder' => function(CategoryRepository $repository) use($pattern){
-                        return $repository->getLikeQueryBuilder($pattern);
-                    }
+                    'multiple'      => true
+
                 ))
 
         ;
@@ -56,7 +54,7 @@ class AdvertType extends AbstractType
                     return;
                 }
 
-                if(null === $advert->getId()){
+                if(!$advert->getPublished() || null === $advert->getID()){
                     $event->getForm()->add('published', CheckboxType::class, array('required' => false));
                 } else {
                     $event->getForm()->remove('published');
@@ -76,14 +74,6 @@ class AdvertType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'OC\PlatformBundle\Entity\Advert'
         ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'oc_platformbundle_advert';
     }
 
 

@@ -36,7 +36,8 @@
         "symfony/swiftmailer-bundle": "^2.3.10",
         "symfony/symfony": "3.2.*",
         "twig/twig": "^1.0||^2.0",
-        "dzango/twig-truncate-extension": "~1.0"
+        "dzango/twig-truncate-extension": "~1.0",
+        "friendsofsymfony/user-bundle": "dev-master"
     },
 
     "require-dev": {

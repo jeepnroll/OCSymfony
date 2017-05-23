@@ -9,13 +9,16 @@
 namespace OC\PlatformBundle\Controller;
 
 use OC\PlatformBundle\Entity\Advert;
+use OC\PlatformBundle\Entity\Category;
 use OC\PlatformBundle\Form\AdvertEditType;
 use OC\PlatformBundle\Form\AdvertType;
+use OC\PlatformBundle\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 
 /**
@@ -24,6 +27,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class AdvertController extends Controller
 {
 
+    /**
+     * @param $limit
+     * @return Response
+     */
     public function menuAction($limit)
     {
         $em = $this->getDoctrine()->getManager();
@@ -53,15 +60,24 @@ class AdvertController extends Controller
         $em = $this->getDoctrine()->getManager();
         // Ici, on récupérera l'annonce correspondante à $id
         $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
-
+        $addCat = new Category();
         // Même mécanisme que pour l'ajout
         if(null === $advert){
             throw new NotFoundHttpException("l'annonce d'id " . $id . " n'existe pas !");
         }
-
         $form = $this->get('form.factory')->create(AdvertEditType::class, $advert);
+        $formAddCat = $this->get('form.factory')->create(CategoryType::class, $addCat);
+
+        if($formAddCat->handleRequest($request)->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($addCat);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', "Ajout de la catégorie bien enregistrée.");
+        }
+
 
         if($request->isMethod("POST") && $form->handleRequest($request)->isValid()){
+
             $em->flush();
             $request->getSession()->getFlashBag()->add("notice", "Annonce bien modifiée");
 
@@ -72,7 +88,8 @@ class AdvertController extends Controller
             'OCPlatformBundle:Advert:edit.html.twig',
             array(
                 'advert'    => $advert,
-                'form'      => $form->createView()
+                'form'      => $form->createView(),
+                'formAddCat'    => $formAddCat->createView()
             )
         );
     }
@@ -122,12 +139,26 @@ class AdvertController extends Controller
      */
     public function addAction(Request $request)
     {
+        // On vérifie que l'utilisateur dispose bien du rôle ROLE_AUTEUR
+        if(!$this->get("security.authorization_checker")->isGranted('ROLE_AUTEUR')){
+            throw new AccessDeniedException('Accès limité aux auteurs');
+        }
+
         // On crée un objet Advert
         $advert = new Advert();
+        $addCat = new Category();
         // On crée le FormBuilder grâce au service form factory
         $form = $this->get("form.factory")->create(AdvertType::class, $advert);
-
+        $formAddCat = $this->get("form.factory")->create(CategoryType::class, $addCat)   ;
         // Si la requête est en POST
+
+        if($formAddCat->handleRequest($request)->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($addCat);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', "Ajout de la catégorie bien enregistrée.");
+        }
+
         if($request->isMethod('POST') && $form->handleRequest($request)->isValid())
         {
             // On fait le lien Requête <-> Formulaire
@@ -146,6 +177,7 @@ class AdvertController extends Controller
             "OCPlatformBundle:Advert:add.html.twig",
             array(
                 'form' => $form->createView(),
+                'formAddCat' => $formAddCat->createView()
             )
         );
     }
@@ -222,5 +254,15 @@ class AdvertController extends Controller
                 'page'          => $page
             )
         );
+    }
+
+    public function purgeAction($days, Request $request)
+    {
+        $purger = $this->get("oc_platform.purger.advert");
+        $purger->purge($days);
+
+        $request->getSession()->getFlashBag()->add('info', 'Les annonces plus vielles que ' . $days . ' jours ont été purgées.');
+
+        return $this->redirectToRoute('oc_platform_home');
     }
 }

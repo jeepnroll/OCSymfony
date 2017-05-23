@@ -27,6 +27,27 @@
         <div id="menu" class="col-md-3">
             <div class="card">
                 <div class="card-header">
+                    <h3 class="card-title">Utilisateur</h3>
+                </div>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <div class="card-block">
+                        <p class="h4 lead">Bonjour <strong>{{ app.user.username }}</strong></p>
+                    </div>
+                    <div class="footer">
+                        <button class="btn btn-danger col">Déconnexion</button>
+                    </div>
+                {% else %}
+                    <div class="card-block">
+                        <p class="h5 lead">Connectez-vous</p>
+                    </div>
+                    <div class="footer">
+                        <button class="btn btn-success col">Connexion</button>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <div class="card-header">
                     <h3 class="card-title">Les annonces</h3>
                 </div>
                 <div class="card-block">

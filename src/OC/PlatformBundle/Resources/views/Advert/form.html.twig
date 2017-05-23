@@ -1,5 +1,5 @@
-{{ form_start(form, {'attr': {'class':'form-horizontal'}}) }}
-{{ form_errors(form) }}
+{{ form_start(form) }}
+{#{{ form_errors(form) }}#}
 <fieldset class="bg-faded p-4 mb-2">
     <legend>
         <strong>Annonce</strong>
@@ -24,7 +24,6 @@
                 class="btn btn-sm btn-primary"
                 data-toggle="modal"
                 data-target="#modAddCat"
-
         >
             <i class="fa fa-plus"></i>
         </button>
@@ -43,7 +42,11 @@
     <legend>
         <strong>Image</strong>
     </legend>
+    {% if form.image is defined %}
+        <img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}" class="thumbnail">
+    {% else %}
     {{ form_row(form.image) }}
+    {% endif %}
 </fieldset>
 <fieldset class="bg-faded p-4 mb2">
     <legend>
@@ -52,11 +55,17 @@
     {{ form_row(form.content) }}
     {{ form_row(form.finderProfil) }}
 </fieldset>
-{{ form_row(form.published) }}
-{{ form_row(form.save) }}
-{{ form_rest(form) }}
-{{ form_end(form) }}
 
+{% if form.published is defined %}
+    {{ form_row(form.published) }}
+{% endif %}
+{{ form_widget(form.save, {'attr': {'class': "btn btn-primary"}}) }}
+
+
+{{ form_rest(form) }}
+
+
+{{ form_end(form) }}
 <div class="modal fade" id="modAddCat" tabindex="-1" role="dialog" aria-labelledby="modAddCat" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -66,19 +75,15 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                test
+            <div class="modal-body" id="modalForm">
+                {{ form_start(formAddCat) }}
+                {{ form_label(formAddCat.name) }}
+                {{ form_errors(formAddCat.name) }}
+                {{ form_widget(formAddCat.name) }}
+                {{ form_rest(formAddCat) }}
+                <button class="btn btn-primary" type="submit">Ajouter</button>
+                {{ form_end(formAddCat) }}
             </div>
         </div>
     </div>
 </div>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-//        $('#add_category').on('click', function () {
-//
-//        })
-    });
-</script>
-

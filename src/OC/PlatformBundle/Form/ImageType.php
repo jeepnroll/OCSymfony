@@ -29,13 +29,6 @@ class ImageType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'oc_platformbundle_image';
-    }
 
 
 }

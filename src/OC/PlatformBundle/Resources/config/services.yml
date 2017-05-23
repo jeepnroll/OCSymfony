@@ -19,3 +19,15 @@ services:
             - "@oc_platform.email.application_mailer"
         tags:
             - { name: doctrine.event_listener, event: PostPersist }
+
+    oc_platform.validator.antiflood:
+        class: OC\PlatformBundle\Validator\AntifloodValidator
+        arguments: [request_stack, doctrine.orm.entity_manager]
+        tags:
+            - { name: validator.constraint_validator, alias: oc_platform_antiflood }
+
+
+    oc_platform.purger.advert:
+        class: OC\PlatformBundle\Purger\AdvertPurger
+        arguments:
+            - "@doctrine.orm.entity_manager"

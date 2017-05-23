@@ -18,15 +18,4 @@ class AdvertEditType extends AbstractType
     public function getParent(){
         return AdvertType::class;
     }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'oc_platformbundle_advert';
-    }
-
-
 }

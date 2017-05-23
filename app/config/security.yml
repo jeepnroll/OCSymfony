@@ -1,24 +1,44 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/security.html
 security:
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+        OC\UserBundle\Entity\User: sha512
+
+    role_hierarchy:
+        ROLE_ADMIN:         [ROLE_AUTEUR, ROLE_MODERATEUR]
+        ROLE_SUPER_ADMIN:   [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
-
-    firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
         main:
-            anonymous: ~
-            # activate different ways to authenticate
+            id: fos_user.user_provider.username
 
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
 
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
-            #form_login: ~
+    access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+
+    provider: in_memory
+    firewalls:
+        dev:
+            pattern:        ^/(_(profiler|wdt)|css|images|js)/
+            security:       false
+        main_login:
+            pattern:        ^/login$
+            anonymous:      true
+        main:
+            pattern:        ^/
+            anonymous:      true
+            provider:       main
+            form_login:
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+            logout:
+                path:       fos_user_security_logout
+                target:     fos_user_security_login
+            remember_me:
+                secret:     %secret%
+
+
+
+

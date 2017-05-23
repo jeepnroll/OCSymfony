@@ -4,7 +4,6 @@ namespace OC\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Image
@@ -198,5 +197,16 @@ class Image
         $this->tempFileName = $tempFileName;
     }
 
+    public function getWebPath()
+    {
+       $urlImg = $this->getUrl();
+
+       if(parse_url($urlImg, PHP_URL_SCHEME) === 'http' || parse_url($urlImg, PHP_URL_SCHEME) === 'https'){
+           return $this->getUrl();
+       } else {
+           return $this->getUploadDir().'/'.$this->getId().'.'.$this->getUrl();
+       }
+
+    }
 
 }

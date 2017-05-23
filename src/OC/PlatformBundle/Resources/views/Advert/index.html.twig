@@ -15,7 +15,7 @@
             <div class="row m-0 p-0">
                 {% if advert.image is not null %}
                     <div class="col-4 m-0 p-0 align-middle">
-                        <img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}" class="img-thumbnail">
+                        <img src="{{ asset(advert.image.webPath) }}" alt="{{ advert.image.alt }}" class="img-thumbnail">
                     </div>
                 {% endif %}
                 <div class="col m-0 p-0 align-middle">

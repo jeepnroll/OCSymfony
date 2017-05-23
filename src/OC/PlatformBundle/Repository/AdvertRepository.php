@@ -62,5 +62,17 @@ class AdvertRepository extends EntityRepository
 
         return new Paginator($query, true);
     }
+
+    public function getAdvertsBefore(\DateTime $date)
+    {
+        return $this->createQueryBuilder("a")
+            ->where("a.updateAt <= :date")
+            ->orWhere("a.updateAt IS NULL AND a.date <= :date")
+            ->andWhere("a.applications IS EMPTY")
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult();
+
+    }
 }
 

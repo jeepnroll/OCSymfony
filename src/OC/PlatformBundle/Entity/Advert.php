@@ -5,6 +5,11 @@ namespace OC\PlatformBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use OC\PlatformBundle\Entity\Application;
+use OC\PlatformBundle\Validator\Antiflood;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Advert
@@ -12,6 +17,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="advert")
  * @ORM\Entity(repositoryClass="OC\PlatformBundle\Repository\AdvertRepository")
  * @ORM\HasLifecycleCallBacks()
+ * @UniqueEntity(fields="title", message="Un article existe déjà avec ce titre")
  */
 class Advert
 {
@@ -37,11 +43,12 @@ class Advert
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updateAt;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\Application", mappedBy="advert")
      */
     private $applications;
+
     /**
      * @ORM\ManyToMany(targetEntity="OC\PlatformBundle\Entity\Category", cascade={"persist"})
      * @ORM\JoinTable(name="oc_advert_category")
@@ -64,46 +71,67 @@ class Advert
     private $id;
 
     /**
-     * @var \DateTime
-     *
+     * @var  \DateTime
      * @ORM\Column(name="date", type="datetime")
+     * @Assert\DateTime()
      */
     private $date;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="title", type="string", length=255, unique=true)
+     * @Assert\Length(min=10)
      */
     private $title;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="author", type="string", length=150)
+     * @Assert\Length(min=2)
      */
     private $author;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="content", type="text")
+     * @Assert\NotBlank()
+     * @Antiflood()
      */
     private $content;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="finderProfil", type="text")
+     * @Assert\NotBlank()
      */
     private $finderProfil;
 
     /**
      * @var bool
-     *
      * @ORM\Column(name="published", type="boolean")
      */
     private $published = true;
+
+    /**
+     * @var string $ip
+     */
+    private $ip;
+
+    /**
+     * @return string
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param string $ip
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+    }
 
     /**
      * Advert constructor.
@@ -332,11 +360,11 @@ class Advert
     /**
      * Add application
      *
-     * @param \OC\PlatformBundle\Entity\Application $application
+     * @param Application $application
      *
      * @return Advert
      */
-    public function addApplication(\OC\PlatformBundle\Entity\Application $application)
+    public function addApplication(Application $application)
     {
         $this->applications[] = $application;
 
@@ -349,9 +377,9 @@ class Advert
     /**
      * Remove application
      *
-     * @param \OC\PlatformBundle\Entity\Application $application
+     * @param Application $application
      */
-    public function removeApplication(\OC\PlatformBundle\Entity\Application $application)
+    public function removeApplication(Application $application)
     {
         $this->applications->removeElement($application);
     }
