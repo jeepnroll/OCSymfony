@@ -30,9 +30,9 @@ class AdvertType extends AbstractType
             ->add('author',         TextType::class)
             ->add('authorMail',     EmailType::class )
             ->add('title',          TextType::class)
-            ->add('image',          ImageType::class)
-            ->add('content',        TextareaType::class )
-            ->add('finderProfil',   TextareaType::class)
+            ->add('image',          ImageType::class, array('required' => false))
+            ->add('content',        CKeditorType::class )
+            ->add('finderProfil',   CKeditorType::class)
             ->add('save',           SubmitType::class)
             ->add('categories',     EntityType::class,
                 array(

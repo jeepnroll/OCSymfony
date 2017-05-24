@@ -31,10 +31,10 @@
                 </div>
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <div class="card-block">
-                        <p class="h4 lead">Bonjour <strong>{{ app.user.username }}</strong></p>
+                        <p class="h4 lead">{{ 'Hello' | trans({'%name%': app.user.username | title })}}</p>
                     </div>
                     <div class="footer">
-                        <button class="btn btn-danger col">Déconnexion</button>
+                        <a href="{{ path('fos_user_security_logout') }}" class="btn btn-danger col">Déconnexion</a>
                     </div>
                 {% else %}
                     <div class="card-block">

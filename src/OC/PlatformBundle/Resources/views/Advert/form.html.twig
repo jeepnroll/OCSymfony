@@ -42,11 +42,7 @@
     <legend>
         <strong>Image</strong>
     </legend>
-    {% if form.image is defined %}
-        <img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}" class="thumbnail">
-    {% else %}
-    {{ form_row(form.image) }}
-    {% endif %}
+    {{ form_row(form.image ) }}
 </fieldset>
 <fieldset class="bg-faded p-4 mb2">
     <legend>

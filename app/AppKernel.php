@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new \CoreBundle\CoreBundle(),
             new OC\UserBundle\OCUserBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new \Ivory\CKEditorBundle\IvoryCKEditorBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

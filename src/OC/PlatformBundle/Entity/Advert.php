@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use OC\PlatformBundle\Entity\Application;
 use OC\PlatformBundle\Validator\Antiflood;
+use OC\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -117,6 +119,9 @@ class Advert
      */
     private $ip;
 
+
+    private $user;
+
     /**
      * @return string
      */
@@ -124,6 +129,8 @@ class Advert
     {
         return $this->ip;
     }
+
+
 
     /**
      * @param string $ip
@@ -133,6 +140,8 @@ class Advert
         $this->ip = $ip;
     }
 
+
+
     /**
      * Advert constructor.
      */
@@ -141,6 +150,7 @@ class Advert
         $this->date         = new \DateTime();
         $this->categories   = new ArrayCollection();
         $this->applications = new ArrayCollection();
+        $this->user         = new User();
     }
 
     /**
@@ -500,11 +510,17 @@ class Advert
 
     /**
      * Get nbApplications
-     *
      * @return integer
      */
     public function getNbApplications()
     {
         return $this->nbApplications;
     }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+
 }

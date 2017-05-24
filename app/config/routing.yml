@@ -4,11 +4,14 @@ oc_platform_image:
 
 oc_core:
     resource: "@CoreBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}/
+    requirements:
+        _locale: en|fr
 
 oc_platform:
     resource: "@OCPlatformBundle/Resources/config/routing.yml"
     prefix:   /platform
+
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

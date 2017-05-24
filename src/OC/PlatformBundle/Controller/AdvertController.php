@@ -10,6 +10,8 @@ namespace OC\PlatformBundle\Controller;
 
 use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\Category;
+use OC\PlatformBundle\Event\MessagePostEvent;
+use OC\PlatformBundle\Event\PlatformEvents;
 use OC\PlatformBundle\Form\AdvertEditType;
 use OC\PlatformBundle\Form\AdvertType;
 use OC\PlatformBundle\Form\CategoryType;
@@ -161,6 +163,8 @@ class AdvertController extends Controller
 
         if($request->isMethod('POST') && $form->handleRequest($request)->isValid())
         {
+            $event = new MessagePostEvent($advert->getContent(), $advert->getUser());
+            $this->get('event_dispatcher')->dispatch(PlatformEvents::POST_MESSAGE, $event);
             // On fait le lien Requête <-> Formulaire
             // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
 
@@ -264,5 +268,14 @@ class AdvertController extends Controller
         $request->getSession()->getFlashBag()->add('info', 'Les annonces plus vielles que ' . $days . ' jours ont été purgées.');
 
         return $this->redirectToRoute('oc_platform_home');
+    }
+
+    public function translationAction($name){
+        return $this->render(
+            'OCPlatformBundle:Advert:translation.html.twig',
+            array(
+                "name" => $name
+            )
+        );
     }
 }
